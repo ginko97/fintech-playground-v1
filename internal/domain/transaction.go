@@ -70,3 +70,21 @@ type Transaction struct {
 	CreatedAt      time.Time         `json:"created_at"`
 	UpdatedAt      time.Time         `json:"updated_at"`
 }
+
+func NewTransaction(accountID uuid.UUID, amount int64, currency string, txType TransactionType, fundingSource string, idempotencyKey string) (*Transaction, error) {
+	id, err := uuid.NewV7()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Transaction{
+		ID:             id,
+		AccountID:      accountID,
+		Amount:         amount,
+		Currency:       currency,
+		Type:           txType,
+		FundingSource:  fundingSource,
+		Status:         StatusPending,
+		IdempotencyKey: idempotencyKey,
+	}, nil
+}

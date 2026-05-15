@@ -17,7 +17,7 @@ CREATE TABLE ledger_entries (
     type VARCHAR(10) CHECK (type IN ('debit', 'credit')),
     funding_source VARCHAR(50), -- e.g., 'QR_PAYNOW', 'CREDIT_CARD', 'CRYPTO'
     metadata JSONB,
-    status VARCHAR(20) CHECK (status IN ('pending', 'success', 'failed', 'uncertain', 'reversed'))
+    status VARCHAR(20) CHECK (status IN ('pending', 'success', 'failed', 'uncertain', 'reversed')),
     idempotency_key VARCHAR(255) UNIQUE,
     settled_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

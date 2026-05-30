@@ -12,4 +12,5 @@ type TransactionRepository interface {
 	GetByInternalID(ctx context.Context, id uuid.UUID) (*Transaction, error)
 	GetByIdempotencyKey(ctx context.Context, key string) (*Transaction, error)
 	UpdateStatus(ctx context.Context, id uuid.UUID, status TransactionStatus) error
+	GetBalance(ctx context.Context, accountID uuid.UUID) (int64, error)
 }

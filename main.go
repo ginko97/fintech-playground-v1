@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/ginko97/fintech-playground-v1/internal/api/router"
 	"github.com/ginko97/fintech-playground-v1/internal/domain"
@@ -31,10 +33,19 @@ func (g *LocalMockGateway) Inquiry(ctx context.Context, tx domain.Transaction) (
 }
 
 func main() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo, // Capture INFO, WARN, and ERROR logs
+	}))
+
+	// Set it globally so any file can access it using slog.Info() or slog.Error()
+	slog.SetDefault(logger)
+
+	slog.Info("Starting fintech-playground-v1 API server", "port", "8080")
+
 	ctx := context.Background()
 
 	// Database Connection Pool
-	connStr := "postgres://postgres:postgres@localhost:5432/fintech_test?sslmode=disable"
+	connStr := "postgres://postgres:password@localhost:5432/fintech_test?sslmode=disable"
 	pool, err := pgxpool.New(ctx, connStr)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v", err)

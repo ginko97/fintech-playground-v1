@@ -17,6 +17,8 @@ func NewRouter(uc *usecase.TransactionUsecase) *gin.Engine {
 			c.JSON(200, gin.H{"status": "UP"})
 		})
 		v1.POST("/payments", handler.CreatePayment)
+
+		v1.GET("/accounts/:id/balance", handler.GetBalance)
 	}
 
 	return r

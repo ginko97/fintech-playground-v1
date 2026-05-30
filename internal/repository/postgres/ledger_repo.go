@@ -92,3 +92,20 @@ func (r *LedgerRepo) GetByIdempotencyKey(ctx context.Context, key string) (*doma
 func (r *LedgerRepo) UpdateStatus(ctx context.Context, id uuid.UUID, status domain.TransactionStatus) error {
 	return nil // TODO: Implement
 }
+
+func (r *LedgerRepo) GetBalance(ctx context.Context, accountID uuid.UUID) (int64, error) {
+	query := `
+		SELECT 
+			COALESCE(SUM(CASE WHEN type = 'credit' THEN amount ELSE -amount END), 0) as balance
+		FROM ledger_entries
+		WHERE account_id = $1 AND status = 'success';
+	`
+
+	var balance int64
+	err := r.pool.QueryRow(ctx, query, accountID).Scan(&balance)
+	if err != nil {
+		return 0, err
+	}
+
+	return balance, nil
+}

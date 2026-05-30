@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/ginko97/fintech-playground-v1/internal/domain"
+	"github.com/google/uuid"
 )
 
 type TransactionUsecase struct {
@@ -51,4 +52,8 @@ func (u *TransactionUsecase) ProcessPayment(ctx context.Context, tx *domain.Tran
 	tx.Status = resp.Status
 
 	return tx, err
+}
+
+func (u *TransactionUsecase) GetAccountBalance(ctx context.Context, accountID uuid.UUID) (int64, error) {
+	return u.repo.GetBalance(ctx, accountID)
 }

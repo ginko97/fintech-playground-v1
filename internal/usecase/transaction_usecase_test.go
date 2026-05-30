@@ -30,6 +30,10 @@ func (m *mockRepo) UpdateStatus(ctx context.Context, id uuid.UUID, status domain
 	return nil
 }
 
+func (m *mockRepo) GetBalance(ctx context.Context, accountID uuid.UUID) (int64, error) {
+	return 0, nil
+}
+
 type mockGateway struct {
 	onAuthorize func(tx domain.Transaction) (*domain.PaymentResponse, error)
 }
